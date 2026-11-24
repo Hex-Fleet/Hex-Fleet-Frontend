@@ -1,4 +1,26 @@
 import AppShell from '../../components/AppShell';
 import { PageHeader, SectionHeading } from '../../components/UI';
+import { API_BASE_URL } from '../../lib/api';
 
-export default function SettingsPage() { return <AppShell><PageHeader eyebrow="Workspace configuration" title="Settings" description="Control how HexFleet receives signal from the field." /><section className="settings-grid"><div className="panel settings-card"><SectionHeading title="Device intervals" detail="Synced during health checks" /><label>Health check interval <span>minutes</span><input defaultValue="5" /></label><label>Telemetry interval <span>minutes</span><input defaultValue="1" /></label><button className="primary-button save-button">Save settings</button></div><div className="panel settings-card"><SectionHeading title="Enabled signals" detail="Applied per controller" /><div className="toggle-row"><span><strong>GPS tracking</strong><small>Location and route movement</small></span><i className="toggle on" /></div><div className="toggle-row"><span><strong>Fuel telemetry</strong><small>A22 ultrasonic readings</small></span><i className="toggle on" /></div><div className="toggle-row"><span><strong>RFID attendance</strong><small>Instant scan ingestion</small></span><i className="toggle on" /></div></div></section></AppShell>; }
+export const metadata = { title: 'Settings · HexFleet' };
+
+export default function SettingsPage() {
+  return <AppShell>
+    <PageHeader eyebrow="Workspace configuration" title="Settings" description="Workspace settings are served by the HexFleet API." />
+    <section className="settings-grid">
+      <div className="panel settings-card">
+        <SectionHeading title="Backend API" detail="Source of all live dashboard data" />
+        <label>API host <span>read-only</span><input readOnly value={API_BASE_URL} /></label>
+        <p className="muted-cell">Configured with <code className="mono">NEXT_PUBLIC_API_URL</code>. Change it in the Vercel project environment, then redeploy.</p>
+      </div>
+      <div className="panel settings-card">
+        <SectionHeading title="Device configuration" detail="Managed by the backend" />
+        <div className="live-empty">
+          <span>⚙</span>
+          <strong>No settings endpoint available yet</strong>
+          <p>The current API does not expose a settings endpoint, so there are no editable values to show here.</p>
+        </div>
+      </div>
+    </section>
+  </AppShell>;
+}

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import SystemStatus from './SystemStatus';
 
 const primaryNav = [
   { href: '/', label: 'Overview', icon: '◈' },
@@ -10,6 +11,20 @@ const primaryNav = [
   { href: '/students', label: 'Students', icon: '◌' },
   { href: '/attendance', label: 'Attendance', icon: '✓' }
 ];
+
+const SECTION_LABELS = {
+  '/': 'Overview',
+  '/devices': 'Devices',
+  '/students': 'Students',
+  '/attendance': 'Attendance',
+  '/settings': 'Settings'
+};
+
+function sectionLabel(pathname) {
+  if (!pathname || pathname === '/') return 'Overview';
+  const match = Object.keys(SECTION_LABELS).find((href) => href !== '/' && pathname.startsWith(href));
+  return match ? SECTION_LABELS[match] : 'Overview';
+}
 
 function NavItem({ item, collapsed }) {
   const pathname = usePathname();
@@ -21,6 +36,8 @@ function NavItem({ item, collapsed }) {
 
 export default function AppShell({ children }) {
   const [collapsed, setCollapsed] = useState(false);
+  const pathname = usePathname();
+  const current = sectionLabel(pathname);
   return <div className="app-frame">
     <aside className={`sidebar ${collapsed ? 'sidebar-collapsed' : ''}`}>
       <div className="brand-row"><Link href="/" className="brand-mark"><span className="brand-hex">H</span><span className={collapsed ? 'sr-only' : ''}>HEX<span>FLEET</span></span></Link><button className="collapse-button" onClick={() => setCollapsed(!collapsed)} aria-label="Toggle sidebar">{collapsed ? '→' : '←'}</button></div>
@@ -29,10 +46,10 @@ export default function AppShell({ children }) {
       <nav className="nav-list">{primaryNav.map((item) => <NavItem key={item.href} item={item} collapsed={collapsed} />)}</nav>
       <div className={`nav-label mt-auto ${collapsed ? 'sr-only' : ''}`}>System</div>
       <nav className="nav-list"><NavItem item={{ href: '/settings', label: 'Settings', icon: '⚙' }} collapsed={collapsed} /></nav>
-      <div className={`sidebar-footer ${collapsed ? 'justify-center' : ''}`}><div className="avatar">VK</div>{!collapsed && <div><p className="user-name">Vikram Kumar</p><p className="user-role">Fleet admin</p></div>}</div>
+      <div className={`sidebar-footer ${collapsed ? 'justify-center' : ''}`}><div className="avatar">HF</div>{!collapsed && <div><p className="user-name">HexFleet</p><p className="user-role">Fleet operator</p></div>}</div>
     </aside>
     <div className="main-column">
-      <header className="topbar"><div className="breadcrumbs"><span className="mobile-brand">HEX<span>FLEET</span></span><span className="breadcrumb-muted">Control room</span><span>/</span><span>Overview</span></div><div className="topbar-actions"><div className="system-status"><span className="pulse-dot" /> All systems operational</div><button className="icon-button" aria-label="Notifications">◔<span className="notification-dot" /></button><div className="top-avatar">VK</div></div></header>
+      <header className="topbar"><div className="breadcrumbs"><span className="mobile-brand">HEX<span>FLEET</span></span><span className="breadcrumb-muted">Control room</span><span>/</span><span>{current}</span></div><div className="topbar-actions"><SystemStatus /><button className="icon-button" aria-label="Notifications">◔<span className="notification-dot" /></button><div className="top-avatar" title="HexFleet">HF</div></div></header>
       <main className="page-content">{children}</main>
     </div>
   </div>;
