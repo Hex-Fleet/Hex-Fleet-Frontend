@@ -4,6 +4,7 @@ import { MetricCard, PageHeader, SectionHeading, StatusPill } from '../component
 import { ApiErrorState, EmptyState } from '../components/ApiState';
 import { getDashboardData } from '../lib/api';
 import RefreshButton from '../components/RefreshButton';
+import LazyFleetCharts from '../components/LazyFleetCharts';
 
 export const dynamic = 'force-dynamic';
 
@@ -75,7 +76,7 @@ export default async function OverviewPage() {
       </div>
       <section className="panel activity-panel">
         <SectionHeading title="Today’s attendance activity" detail="Hourly scans from the live register" action={<Link href="/attendance" className="text-link">Open attendance →</Link>} />
-         {recentAttendance.length ? <div className="activity-chart"><div className="chart-y"><span>High</span><span>Med</span><span>Low</span><span>0</span></div><div className="chart-body"><div className="chart-gridlines" />{activityBars(recentAttendance).map((height, index) => <div className="bar-wrap" key={index}><div className="bar" style={{ height: `${height}%` }} /><span>{String(index + 6).padStart(2, '0')}</span></div>)}</div></div> : <EmptyState icon="⌁" title="Attendance summary pending" message="The API has not supplied enough scan data to draw activity yet." />}
+         {recentAttendance.length ? <LazyFleetCharts attendance={recentAttendance} /> : <EmptyState icon="⌁" title="Attendance summary pending" message="The API has not supplied enough scan data to draw activity yet." />}
       </section>
     </>}
   </AppShell>;
