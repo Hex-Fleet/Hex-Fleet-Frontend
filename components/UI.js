@@ -1,4 +1,6 @@
+import { ArrowUpRight } from 'lucide-react';
+
 export function PageHeader({ eyebrow, title, description, action }) { return <div className="page-header"><div><p className="eyebrow">{eyebrow}</p><h1>{title}</h1>{description && <p className="page-description">{description}</p>}</div>{action}</div>; }
 export function StatusPill({ children, tone = 'green' }) { return <span className={`status-pill status-${tone}`}><span />{children}</span>; }
-export function MetricCard({ label, value, detail, trend, accent = 'lime' }) { return <div className={`metric-card accent-${accent}`}><div className="metric-top"><p>{label}</p><span className="metric-spark">↗</span></div><div className="metric-value">{value}</div><div className="metric-bottom"><span>{detail}</span>{trend && <span className="metric-trend">{trend}</span>}</div></div>; }
+export function MetricCard({ label, value, detail, trend, accent = 'lime' }) { return <div className={`metric-card accent-${accent}`}><div className="metric-top"><p>{label}</p><span className="metric-spark"><ArrowUpRight size={14} /></span></div><div className="metric-value">{value}</div><div className="metric-bottom"><span>{detail}</span>{trend && <span className="metric-trend">{trend}</span>}</div></div>; }
 export function SectionHeading({ title, detail, action }) { return <div className="section-heading"><div><h2>{title}</h2>{detail && <p>{detail}</p>}</div>{action}</div>; }
