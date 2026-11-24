@@ -5,7 +5,9 @@ import Lenis from '@studio-freight/lenis';
 
 export default function SmoothScroll() {
   useEffect(() => {
-    const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
+    const wrapper = document.querySelector('.page-content');
+    if (!wrapper) return undefined;
+    const lenis = new Lenis({ wrapper, content: wrapper, duration: 1.2, smoothWheel: true, gestureOrientation: 'vertical' });
     let frame;
     const raf = (time) => { lenis.raf(time); frame = requestAnimationFrame(raf); };
     frame = requestAnimationFrame(raf);
