@@ -5,11 +5,19 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import SystemStatus from './SystemStatus';
 
-const primaryNav = [
-  { href: '/', label: 'Overview', icon: '◈' },
-  { href: '/devices', label: 'Devices', icon: '⌁' },
-  { href: '/students', label: 'Students', icon: '◌' },
-  { href: '/attendance', label: 'Attendance', icon: '✓' }
+const navigationGroups = [
+  { label: 'Workspace', items: [
+    { href: '/', label: 'Overview', icon: '◈' }, { href: '/live', label: 'Live map', icon: '⌖' },
+    { href: '/vehicles', label: 'Vehicles', icon: '▣' }, { href: '/devices', label: 'Devices', icon: '⌁' },
+    { href: '/trips', label: 'Trips', icon: '↗' }, { href: '/fuel', label: 'Fuel', icon: '◒' },
+    { href: '/routes', label: 'Routes', icon: '⌁' }, { href: '/alerts', label: 'Alerts', icon: '!' },
+    { href: '/reports', label: 'Reports', icon: '▤' }, { href: '/analytics', label: 'Analytics', icon: '⌁' }
+  ] },
+  { label: 'People', items: [
+    { href: '/students', label: 'Students', icon: '◌' }, { href: '/people/drivers', label: 'Drivers', icon: '◉' },
+    { href: '/people/staff', label: 'Staff', icon: '◎' }, { href: '/people/cards', label: 'RFID cards', icon: '▱' },
+    { href: '/attendance', label: 'Attendance', icon: '✓' }
+  ] }
 ];
 
 const SECTION_LABELS = {
@@ -29,7 +37,7 @@ function sectionLabel(pathname) {
 function NavItem({ item, collapsed }) {
   const pathname = usePathname();
   const active = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
-  return <Link href={item.href} className={`nav-item ${active ? 'nav-item-active' : ''}`} title={collapsed ? item.label : undefined}>
+  return <Link href={item.href} aria-current={active ? 'page' : undefined} className={`nav-item ${active ? 'nav-item-active' : ''}`} title={collapsed ? item.label : undefined}>
     <span className="nav-icon">{item.icon}</span><span className={collapsed ? 'sr-only' : ''}>{item.label}</span>
   </Link>;
 }
@@ -42,8 +50,7 @@ export default function AppShell({ children }) {
     <aside className={`sidebar ${collapsed ? 'sidebar-collapsed' : ''}`}>
       <div className="brand-row"><Link href="/" className="brand-mark"><span className="brand-hex">H</span><span className={collapsed ? 'sr-only' : ''}>HEX<span>FLEET</span></span></Link><button className="collapse-button" onClick={() => setCollapsed(!collapsed)} aria-label="Toggle sidebar">{collapsed ? '→' : '←'}</button></div>
       <div className={`workspace-switch ${collapsed ? 'justify-center' : ''}`}><span className="workspace-dot" />{collapsed ? <span className="sr-only">HexTorq Mobility</span> : <><span>HexTorq Mobility</span><span className="chevron">⌄</span></>}</div>
-      <div className={`nav-label ${collapsed ? 'sr-only' : ''}`}>Workspace</div>
-      <nav className="nav-list">{primaryNav.map((item) => <NavItem key={item.href} item={item} collapsed={collapsed} />)}</nav>
+       {navigationGroups.map((group) => <div className="nav-group" key={group.label}><div className={`nav-label ${collapsed ? 'sr-only' : ''}`}>{group.label}</div><nav className="nav-list">{group.items.map((item) => <NavItem key={item.href} item={item} collapsed={collapsed} />)}</nav></div>)}
       <div className={`nav-label mt-auto ${collapsed ? 'sr-only' : ''}`}>System</div>
       <nav className="nav-list"><NavItem item={{ href: '/settings', label: 'Settings', icon: '⚙' }} collapsed={collapsed} /></nav>
       <div className={`sidebar-footer ${collapsed ? 'justify-center' : ''}`}><div className="avatar">HF</div>{!collapsed && <div><p className="user-name">HexFleet</p><p className="user-role">Fleet operator</p></div>}</div>
