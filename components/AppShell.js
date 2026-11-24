@@ -9,18 +9,16 @@ import logo from '../src/logo/Hexfleet Smart Fleet Solutions (1).png';
 
 const navigationGroups = [
   { label: 'Workspace', items: [
-    { href: '/', label: 'Overview', icon: '◈' }, { href: '/live', label: 'Live map', icon: '⌖' },
-    { href: '/vehicles', label: 'Vehicles', icon: '▣' }, { href: '/devices', label: 'Devices', icon: '⌁' },
-    { href: '/trips', label: 'Trips', icon: '↗' }, { href: '/fuel', label: 'Fuel', icon: '◒' },
-    { href: '/routes', label: 'Routes', icon: '⌁' }, { href: '/alerts', label: 'Alerts', icon: '!' },
-    { href: '/reports', label: 'Reports', icon: '▤' }, { href: '/analytics', label: 'Analytics', icon: '⌁' }
+    { href: '/', label: 'Overview', icon: '◈' }, { href: '/devices', label: 'Devices', icon: '⌁' }
   ] },
   { label: 'People', items: [
-    { href: '/students', label: 'Students', icon: '◌' }, { href: '/people/drivers', label: 'Drivers', icon: '◉' },
-    { href: '/people/staff', label: 'Staff', icon: '◎' }, { href: '/people/cards', label: 'RFID cards', icon: '▱' },
-    { href: '/attendance', label: 'Attendance', icon: '✓' }
+    { href: '/students', label: 'Students', icon: '◌' }, { href: '/attendance', label: 'Attendance', icon: '✓' }
   ] }
 ];
+
+// Future modules are intentionally kept out of the MVP navigation for now:
+// Live map, Vehicles, Trips, Fuel, Routes, Alerts, Reports, Analytics,
+// Drivers, Staff, and standalone RFID cards.
 
 const SECTION_LABELS = {
   '/': 'Overview',
