@@ -9,12 +9,14 @@ import logo from '../src/logo/Hexfleet Smart Fleet Solutions (1).png';
 
 const navigationGroups = [
   { label: 'Workspace', items: [
-    { href: '/', label: 'Overview', icon: '◈' }, { href: '/devices', label: 'Devices', icon: '⌁' }
+    { href: '/', label: 'Overview', icon: '◈' }, { href: '/buses', label: 'Buses', icon: '▣' }, { href: '/devices', label: 'Devices', icon: '⌁' }
   ] },
   { label: 'People', items: [
     { href: '/students', label: 'Students', icon: '◌' }, { href: '/attendance', label: 'Attendance', icon: '✓' }
   ] }
 ];
+
+const adminNavigation = [{ href: '/admin', label: 'Raw tables', icon: '▤' }];
 
 // Future modules are intentionally kept out of the MVP navigation for now:
 // Live map, Vehicles, Trips, Fuel, Routes, Alerts, Reports, Analytics,
@@ -23,9 +25,11 @@ const navigationGroups = [
 const SECTION_LABELS = {
   '/': 'Overview',
   '/devices': 'Devices',
+  '/buses': 'Buses',
   '/students': 'Students',
   '/attendance': 'Attendance',
-  '/settings': 'Settings'
+  '/settings': 'Settings',
+  '/admin': 'Admin'
 };
 
 function sectionLabel(pathname) {
@@ -68,6 +72,8 @@ export default function AppShell({ children }) {
        {navigationGroups.map((group) => <div className="nav-group" key={group.label}><div className={`nav-label ${collapsed ? 'sr-only' : ''}`}>{group.label}</div><nav className="nav-list">{group.items.map((item) => <NavItem key={item.href} item={item} collapsed={collapsed} />)}</nav></div>)}
        <div className={`nav-label mt-auto ${collapsed ? 'sr-only' : ''}`}>System</div>
        <nav className="nav-list"><NavItem item={{ href: '/settings', label: 'Settings', icon: '⚙' }} collapsed={collapsed} /></nav>
+       <div className={`nav-label ${collapsed ? 'sr-only' : ''}`}>Admin</div>
+       <nav className="nav-list">{adminNavigation.map((item) => <NavItem key={item.href} item={item} collapsed={collapsed} />)}</nav>
       <div className={`sidebar-footer ${collapsed ? 'justify-center' : ''}`}><div className="avatar">HF</div>{!collapsed && <div><p className="user-name">HexFleet</p><p className="user-role">Fleet operator</p></div>}</div>
     </aside>
     <div className="main-column">

@@ -1,0 +1,15 @@
+import Link from 'next/link';
+import AppShell from '../../../components/AppShell';
+import { MetricCard, PageHeader, SectionHeading, StatusPill } from '../../../components/UI';
+import { ApiErrorState, EmptyState } from '../../../components/ApiState';
+import { formatDate, getDashboardData } from '../../../lib/api';
+import RefreshButton from '../../../components/RefreshButton';
+
+export const dynamic = 'force-dynamic';
+
+export default async function BusDetailPage({ params }) {
+  try {
+    const bus = await getDashboardData(`/api/dashboard/buses/${(await params).busId}`);
+    return <AppShell><PageHeader eyebrow="Fleet bus" title={`${bus.busNumber} · ${bus.name}`} description="Live GPS, fuel, and mapped RFID activity for this bus." action={<div className="header-actions"><RefreshButton /><Link className="secondary-button" href="/buses">← All buses</Link></div>} /><div className="metric-grid three"><MetricCard label="Controller" value={bus.controller?.online ? 'Online' : 'Offline'} detail={bus.controller?.macAddress || 'No controller mapped'} /><MetricCard label="Latest fuel" value={bus.fuel?.litres == null ? '—' : `${bus.fuel.litres} L`} detail={bus.fuel ? formatDate(bus.fuel.updatedAt) : 'No reading'} accent="blue" /><MetricCard label="Mapped scans" value={bus.mappedScans?.length || 0} detail={`${bus.unmappedScanCount || 0} unmapped in admin logs`} accent="violet" /></div><section className="panel"><SectionHeading title="GPS telemetry" detail="Latest coordinates and speed from the controller" />{bus.gps?.length ? <div className="data-table"><div className="data-head"><span>Time</span><span>Latitude</span><span>Longitude</span><span>Speed</span><span>Map</span></div>{bus.gps.slice(0, 20).map((point) => <div className="data-row" key={point.transId}><strong className="mono">{formatDate(point.measuredAt)}</strong><span>{point.latitude ?? '—'}</span><span>{point.longitude ?? '—'}</span><span>{point.speed == null ? '—' : `${point.speed} km/h`}</span><span className="muted-cell">GPS fix</span></div>)}</div> : <EmptyState icon="⌖" title="No GPS readings yet" message="GPS telemetry will appear after the next device interval." />}</section><section className="panel"><SectionHeading title="Mapped RFID attendance" detail="Only students mapped to an RFID UUID appear here" />{bus.mappedScans?.length ? <div className="data-table"><div className="data-head"><span>Scanned at</span><span>Student</span><span>Card UUID</span><span>Status</span><span>Source</span></div>{bus.mappedScans.map((scan) => <div className="data-row" key={scan.transId}><strong className="mono">{formatDate(scan.scannedAt)}</strong><span>{scan.student}</span><span className="mono">{scan.cardUid}</span><StatusPill tone="green">{scan.status}</StatusPill><span className="muted-cell">RFID reader</span></div>)}</div> : <EmptyState icon="✓" title="No mapped student scans" message="Unmapped cards remain available in the Admin logs tab." />}</section></AppShell>;
+  } catch (error) { return <AppShell><PageHeader eyebrow="Fleet bus" title="Bus details" description="Unable to load this bus." /><ApiErrorState error={error} /></AppShell>; }
+}
