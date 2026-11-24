@@ -1,26 +1,14 @@
 import AppShell from '../../components/AppShell';
 import { PageHeader, SectionHeading } from '../../components/UI';
-import { API_BASE_URL } from '../../lib/api';
+import { ApiErrorState } from '../../components/ApiState';
+import { getDashboardData } from '../../lib/api';
+import { BusManagement } from '../../components/FleetAdminForms';
 
-export const metadata = { title: 'Settings · HexFleet' };
+export const dynamic = 'force-dynamic';
 
-export default function SettingsPage() {
-  return <AppShell>
-    <PageHeader eyebrow="Workspace configuration" title="Settings" description="Workspace settings are served by the HexFleet API." />
-    <section className="settings-grid">
-      <div className="panel settings-card">
-        <SectionHeading title="Backend API" detail="Source of all live dashboard data" />
-        <label>API host <span>read-only</span><input readOnly value={API_BASE_URL} /></label>
-        <p className="muted-cell">Configured with <code className="mono">NEXT_PUBLIC_API_URL</code>. Change it in the Vercel project environment, then redeploy.</p>
-      </div>
-      <div className="panel settings-card">
-        <SectionHeading title="Device configuration" detail="Managed by the backend" />
-        <div className="live-empty">
-          <span>⚙</span>
-          <strong>No settings endpoint available yet</strong>
-          <p>The current API does not expose a settings endpoint, so there are no editable values to show here.</p>
-        </div>
-      </div>
-    </section>
-  </AppShell>;
+export default async function SettingsPage() {
+  try {
+    const [devices, buses] = await Promise.all([getDashboardData('/api/dashboard/devices'), getDashboardData('/api/admin/buses')]);
+    return <AppShell><PageHeader eyebrow="Workspace configuration" title="Settings" description="Configure signals, reporting intervals, and the bus-to-controller fleet map." /><section className="settings-grid"><div className="panel settings-card"><SectionHeading title="Device intervals" detail="Configured per controller during registration" /><label>Health check interval <span>minutes</span><input defaultValue="10" /></label><label>Telemetry interval <span>minutes</span><input defaultValue="1" /></label><p className="muted-cell">The ESP32 receives these values during its startup health check.</p></div><div className="panel settings-card"><SectionHeading title="Enabled signals" detail="Selected on each controller registration" /><div className="toggle-row"><span><strong>GPS tracking</strong><small>Location and route movement</small></span><i className="toggle on" /></div><div className="toggle-row"><span><strong>Fuel telemetry</strong><small>A22 ultrasonic readings</small></span><i className="toggle on" /></div><div className="toggle-row"><span><strong>RFID attendance</strong><small>Instant scan ingestion</small></span><i className="toggle on" /></div></div></section><BusManagement devices={devices || []} buses={buses || []} /></AppShell>;
+  } catch (error) { return <AppShell><PageHeader eyebrow="Workspace configuration" title="Settings" description="Configure the fleet workspace." /><ApiErrorState error={error} /></AppShell>; }
 }
