@@ -26,7 +26,7 @@ export default async function DevicesPage() {
         <div className="data-head"><span>MAC address</span><span>Device</span><span>Mapped bus</span><span>Last health check</span><span>Status</span></div>
         {devices.map((device) => <div className="data-row" key={device.transId}>
           <strong className="mono">{device.macAddress}</strong>
-          <span>{device.name || device.model || 'ESP32 Fleet Node'}</span>
+          <span><strong>{device.name || device.model || 'ESP32 Fleet Node'}</strong><small className="device-sensor-time">GPS: {formatDate(device.gps?.measuredAt, 'No reading')} · Fuel: {formatDate(device.fuel?.updatedAt, 'No reading')}</small></span>
           <span>{device.bus || 'Unmapped'}</span>
           <span className="muted-cell">{formatDate(device.lastHealthCheckTime)}</span>
           <StatusPill tone={device.online ? 'green' : 'red'}>{device.online ? 'Online' : 'Offline'}</StatusPill>
