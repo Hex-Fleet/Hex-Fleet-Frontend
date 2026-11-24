@@ -8,7 +8,7 @@ export default function GlobalLoader() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(false);
+    const finishTimer = window.setTimeout(() => setLoading(false), 420);
     const handleClick = (event) => {
       const link = event.target.closest?.('a[href]');
       if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
@@ -16,8 +16,8 @@ export default function GlobalLoader() {
       if (!href || !href.startsWith('/') || href.startsWith('//') || href === pathname) return;
       setLoading(true);
     };
-    document.addEventListener('click', handleClick);
-    return () => document.removeEventListener('click', handleClick);
+    document.addEventListener('click', handleClick, true);
+    return () => { window.clearTimeout(finishTimer); document.removeEventListener('click', handleClick, true); };
   }, [pathname]);
 
   if (!loading) return null;

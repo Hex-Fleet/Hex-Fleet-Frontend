@@ -135,6 +135,10 @@ button { cursor: pointer; }
   .sidebar-collapsed .brand-mark { justify-content: center; }
   .sidebar-collapsed .collapse-button { align-self: center; }
 }
+
+/* Navigation loading must cover the whole viewport, including the shell. */
+.global-loader { z-index: 9999; background: rgba(12, 38, 68, .48); backdrop-filter: blur(9px); -webkit-backdrop-filter: blur(9px); }
+.global-loader-card { border-color: rgba(255,255,255,.28); background: rgba(16, 43, 75, .94); }
 :root[data-theme='dark'] { color-scheme: dark; --bg: #0b1220; --panel: #111c2d; --panel-2: #17253a; --line: rgba(255,255,255,.1); --muted: #91a1b5; --text: #edf4fb; --navy: #102b4b; --orange: #ff8b38; --lime: #ff8b38; --healthy: #6bd69f; }
 body { background: var(--bg); color: var(--text); }
 .app-frame { background: var(--bg); }
