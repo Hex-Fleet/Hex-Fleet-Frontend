@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import SystemStatus from './SystemStatus';
+import GlobalLoader from './GlobalLoader';
 import logo from '../src/logo/Hexfleet Smart Fleet Solutions (1).png';
 
 const navigationGroups = [
@@ -64,7 +65,7 @@ export default function AppShell({ children }) {
     window.localStorage.setItem('hexfleet-theme', dark ? 'dark' : 'light');
   }, [dark]);
   const closeMobile = () => setMobileOpen(false);
-  return <div className="app-frame">
+  return <div className="app-frame"><GlobalLoader />
     {mobileOpen && <button className="drawer-backdrop" aria-label="Close navigation" onClick={closeMobile} />}
     <aside className={`sidebar ${collapsed ? 'sidebar-collapsed' : ''} ${mobileOpen ? 'sidebar-mobile-open' : ''}`}>
       <div className="brand-row"><Link href="/" className="brand-mark" onClick={closeMobile}><Image src={logo} alt="HexFleet" className="brand-logo" priority /><span className={collapsed ? 'sr-only' : ''}>HEX<span>FLEET</span></span></Link><button className="collapse-button" onClick={() => setCollapsed(!collapsed)} aria-label="Toggle sidebar">{collapsed ? '→' : '←'}</button></div>
