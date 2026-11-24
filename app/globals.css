@@ -139,6 +139,8 @@ button { cursor: pointer; }
 /* Navigation loading must cover the whole viewport, including the shell. */
 .global-loader { z-index: 9999; background: rgba(12, 38, 68, .48); backdrop-filter: blur(9px); -webkit-backdrop-filter: blur(9px); }
 .global-loader-card { border-color: rgba(255,255,255,.28); background: rgba(16, 43, 75, .94); }
+.sidebar { overflow: visible; }
+.collapse-button { position: absolute; top: 50%; right: -14px; z-index: 35; display: grid; width: 28px; height: 28px; place-items: center; border: 1px solid var(--line); border-radius: 50%; color: var(--navy); background: var(--panel); box-shadow: 0 4px 14px rgba(16,43,75,.18); font-size: 18px; transform: translateY(-50%); }
 :root[data-theme='dark'] { color-scheme: dark; --bg: #0b1220; --panel: #111c2d; --panel-2: #17253a; --line: rgba(255,255,255,.1); --muted: #91a1b5; --text: #edf4fb; --navy: #102b4b; --orange: #ff8b38; --lime: #ff8b38; --healthy: #6bd69f; }
 body { background: var(--bg); color: var(--text); }
 .app-frame { background: var(--bg); }
