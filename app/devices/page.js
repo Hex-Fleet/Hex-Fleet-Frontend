@@ -3,6 +3,7 @@ import { PageHeader, SectionHeading, StatusPill } from '../../components/UI';
 import { ApiErrorState, EmptyState } from '../../components/ApiState';
 import { formatDate, getDashboardData } from '../../lib/api';
 import DeviceRegistrationModal from '../../components/DeviceRegistrationModal';
+import RefreshButton from '../../components/RefreshButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,7 +19,7 @@ async function loadDevices() {
 export default async function DevicesPage() {
   const { devices, error } = await loadDevices();
   return <AppShell>
-    <PageHeader eyebrow="Hardware registry" title="Devices" description="Live controllers and sensors from the HexFleet API." action={<DeviceRegistrationModal />} />
+    <PageHeader eyebrow="Hardware registry" title="Devices" description="Live controllers and sensors from the HexFleet API." action={<div className="header-actions"><RefreshButton /><DeviceRegistrationModal /></div>} />
     <section className="panel">
       <SectionHeading title="Registered controllers" detail={`${devices.length} device${devices.length === 1 ? '' : 's'} from the live API`} action={<button className="secondary-button" disabled title="Export is not available yet">Export CSV</button>} />
       {error ? <ApiErrorState error={error} /> : devices.length ? <div className="data-table">

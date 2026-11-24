@@ -3,6 +3,7 @@ import AppShell from '../components/AppShell';
 import { MetricCard, PageHeader, SectionHeading, StatusPill } from '../components/UI';
 import { ApiErrorState, EmptyState } from '../components/ApiState';
 import { getDashboardData } from '../lib/api';
+import RefreshButton from '../components/RefreshButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -36,7 +37,7 @@ export default async function OverviewPage() {
       eyebrow="Live fleet signal"
       title="Fleet overview"
       description="Live fleet signal from the HexFleet API."
-      action={<Link className="primary-button" href="/devices">Open devices</Link>}
+      action={<div className="header-actions"><RefreshButton /><Link className="primary-button" href="/devices">Open devices</Link></div>}
     />
     {error ? <ApiErrorState error={error} /> : <>
       <div className="metric-grid">
