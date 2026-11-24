@@ -36,15 +36,17 @@ export default async function OverviewPage() {
     <PageHeader
       eyebrow="Live fleet signal"
       title="Fleet overview"
-      description="Live fleet signal from the HexFleet API."
+      description="Rathinam Global University fleet operations, attendance and device readiness."
       action={<div className="header-actions"><RefreshButton /><Link className="primary-button" href="/devices">Open devices</Link></div>}
     />
     {error ? <ApiErrorState error={error} /> : <>
-      <div className="metric-grid">
-        <MetricCard label="Active devices" value={`${metrics.activeVehicles ?? 0} / ${metrics.totalVehicles ?? 0}`} detail="Based on last 10 minutes" />
-        <MetricCard label="Students onboard" value={metrics.studentsOnboard ?? 0} detail="Live attendance state" accent="violet" />
-        <MetricCard label="Average fuel reading" value={percent(metrics.averageFuel)} detail="From registered sensors" accent="blue" />
-        <MetricCard label="Attendance scans" value={metrics.attendanceToday ?? 0} detail="Today from the live register" accent="orange" />
+      <div className="preview-banner"><span className="preview-badge">LIVE API</span><span>RGU telemetry is shown only when supplied by the connected API. Missing fleet summaries remain unavailable.</span></div>
+      <div className="metric-grid five">
+        <MetricCard label="Allocated vehicles" value={metrics.totalVehicles ?? '—'} detail="Tenant fleet allocation" />
+        <MetricCard label="Moving" value={metrics.movingVehicles ?? '—'} detail="Current vehicle state" accent="violet" />
+        <MetricCard label="Idle / stopped" value={metrics.idleVehicles ?? '—'} detail="Current vehicle state" accent="blue" />
+        <MetricCard label="No signal" value={signal.offline ?? (devices.length ? '—' : '—')} detail="Device freshness" accent="orange" />
+        <MetricCard label="Open alerts" value={metrics.openAlerts ?? '—'} detail="Requires alert API" accent="orange" />
       </div>
       <div className="dashboard-grid">
         <section className="panel fleet-panel">
@@ -62,18 +64,18 @@ export default async function OverviewPage() {
         </section>
         <section className="panel signal-panel">
           <SectionHeading title="Signal health" detail="Derived from device check-ins" />
-          <div className="signal-ring"><div><strong>{devices.length ? Math.round(((signal.online ?? 0) / devices.length) * 100) : 0}</strong><span>/ 100</span></div></div>
-          <p className="signal-caption">{devices.length ? 'Current device connectivity' : 'Waiting for registered devices'}</p>
+           <div className="signal-ring"><div><strong>{devices.length ? Math.round(((signal.online ?? 0) / devices.length) * 100) : '—'}</strong><span>{devices.length ? '/ 100' : 'pending'}</span></div></div>
+           <p className="signal-caption">{devices.length ? 'Current device connectivity' : 'Waiting for registered devices'}</p>
           <div className="signal-list">
-            <div><span><i className="dot green" />Online</span><strong>{signal.online ?? 0}</strong></div>
-            <div><span><i className="dot amber" />Delayed</span><strong>{signal.delayed ?? 0}</strong></div>
-            <div><span><i className="dot red" />Offline</span><strong>{signal.offline ?? 0}</strong></div>
+             <div><span><i className="dot green" />Online</span><strong>{signal.online ?? '—'}</strong></div>
+             <div><span><i className="dot amber" />Delayed</span><strong>{signal.delayed ?? '—'}</strong></div>
+             <div><span><i className="dot red" />Offline</span><strong>{signal.offline ?? '—'}</strong></div>
           </div>
         </section>
       </div>
       <section className="panel activity-panel">
         <SectionHeading title="Today’s attendance activity" detail="Hourly scans from the live register" action={<Link href="/attendance" className="text-link">Open attendance →</Link>} />
-        <div className="activity-chart"><div className="chart-y"><span>High</span><span>Med</span><span>Low</span><span>0</span></div><div className="chart-body"><div className="chart-gridlines" />{activityBars(recentAttendance).map((height, index) => <div className="bar-wrap" key={index}><div className="bar" style={{ height: `${height}%` }} /><span>{String(index + 6).padStart(2, '0')}</span></div>)}</div></div>
+         {recentAttendance.length ? <div className="activity-chart"><div className="chart-y"><span>High</span><span>Med</span><span>Low</span><span>0</span></div><div className="chart-body"><div className="chart-gridlines" />{activityBars(recentAttendance).map((height, index) => <div className="bar-wrap" key={index}><div className="bar" style={{ height: `${height}%` }} /><span>{String(index + 6).padStart(2, '0')}</span></div>)}</div></div> : <EmptyState icon="⌁" title="Attendance summary pending" message="The API has not supplied enough scan data to draw activity yet." />}
       </section>
     </>}
   </AppShell>;
