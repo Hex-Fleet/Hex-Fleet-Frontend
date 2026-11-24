@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+label { display: grid; gap: 7px; color: #aeb9b5; font-size: 11px; } label input { width: 100%; border: 1px solid var(--line); border-radius: 6px; padding: 11px 12px; color: #e6eee8; background: #111719; outline: none; } label input:focus { border-color: var(--lime); } label small { color: #6f7d80; font-size: 10px; } .modal-backdrop { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 20px; background: rgba(4,8,9,.78); } .modal-card { width: min(560px,100%); max-height: 92vh; overflow: auto; padding: 25px; border: 1px solid var(--line); border-radius: 10px; background: #151d1f; box-shadow: 0 24px 80px rgba(0,0,0,.45); } .modal-card .section-heading { margin-bottom: 22px; } .modal-card .section-heading h2 { color: #edf5ee; font-size: 21px; } .modal-card .section-heading p:not(.eyebrow) { color: #778588; font-size: 11px; } .icon-button { border: 0; color: #95a29f; background: transparent; font-size: 26px; cursor: pointer; } .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; } .check-grid { display: flex; gap: 18px; margin: 19px 0; } .check-option { display: flex; align-items: center; gap: 7px; } .check-option input { accent-color: var(--lime); } .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; } .form-error { margin: 12px 0 0; color: #ff8888; font-size: 11px; }
+
 :root { color-scheme: dark; --bg: #0b0d0f; --panel: #111518; --panel-2: #151a1d; --line: rgba(255,255,255,.08); --muted: #819097; --text: #eef2ed; --lime: #b7f34b; }
 * { box-sizing: border-box; }
 html, body { min-height: 100%; }
